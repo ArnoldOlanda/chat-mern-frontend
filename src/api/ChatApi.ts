@@ -2,7 +2,9 @@ import axios from "axios";
 
 
 export const ChatApi = axios.create({
-    baseURL:'http://192.168.1.34:8000/api',
+
+    baseURL:'https://chat-mern.onrender.com/api',
+    // baseURL:'http://192.168.1.34:8000/api',
     headers:{ 'Content-Type': 'application/json'}
 })
 

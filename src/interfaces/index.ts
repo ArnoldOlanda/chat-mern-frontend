@@ -1,13 +1,28 @@
+export * from './styled-components'
 export interface AuthState{
     authenticated: string;
-    username:string | null;
-    uid:string | null;
+    username:string | undefined;
+    uid:string | undefined;
+    img:string | undefined;
+    errorMessage:string | undefined;
     conversations: Conversation[];
     activeUsers: User[];
-    chatMessages: Message[];
     uidActiveUserChat: string | null;
+}
+
+export interface MessagesState{
+    isLoadingMessages: boolean;
+    chatMessages: Message[];
     chatTitle: string;
-    errorMessage:string | undefined;
+}
+
+export interface ConversationsState{
+    conversations: Conversation[];
+    activeUsers: User[];
+    activeChatUserName: string;
+    activeChatUserId: string;
+    currentConversation: string | null;
+    currentReceiver: string | null;
 }
 
 export interface User {
@@ -21,7 +36,7 @@ export interface User {
 
 export interface Message{
     uid?:string;
-    sender:{ _id: string, nombre:string, img:string };
+    sender:{ _id?: string, nombre?:string, img?:string };
     mensaje:string;
     fecha: Date;
     conversation_id?:string;

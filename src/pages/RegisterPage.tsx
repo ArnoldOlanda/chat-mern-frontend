@@ -1,11 +1,11 @@
 import React, { useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components'
 import Swal from 'sweetalert2';
 import { ChatApi } from '../api/ChatApi';
-import { AppContext } from '../context/AppContext';
+import { AppContext } from '../context/auth/AppContext';
 import { useForm } from '../hooks/useForm'
 import { AuthLayout } from '../layout/AuthLayout'
+import { InputContainer, StyledButton } from '../styled-components';
 
 interface initialState {
   nombre: string;
@@ -54,7 +54,7 @@ export const RegisterPage = () => {
       const { data } = resp;
 
       localStorage.setItem('token', data.token);
-      loginUser(data.usuario.nombre, data.usuario.uid);
+      loginUser(data.usuario.nombre, data.usuario.uid, data.usuario.img);
       navigate('/chat');
 
     } catch (error) {
@@ -117,40 +117,3 @@ export const RegisterPage = () => {
     </AuthLayout>
   )
 }
-
-const InputContainer = styled.div`
-    display: flex;
-    align-items: center;
-    height: 45px;
-    margin-bottom: 10px;
-    input{
-        background-color: #ffffff90;
-        outline: none;
-        width: 100%;
-        height: 100%;
-        border: none;
-        padding-left: 20px;
-        padding-right: 20px;
-        border-radius: 40px;
-        font-size: 16px;
-        color:#292929;
-    }
-`
-const StyledButton = styled.button`
-    background-color: #3448f1;
-    color:#fff;
-    width: 100%;
-    height: 45px;
-    border-radius: 40px;
-    border:none;
-    transition: background .3s ease-in-out;
-    font-size: 18px;
-    margin-top: 10px;
-    margin-bottom: 20px;
-    &:hover{
-        background-color: #1d2ec7;
-    }
-    &:active{
-        background-color: #7086ff;
-    }
-`

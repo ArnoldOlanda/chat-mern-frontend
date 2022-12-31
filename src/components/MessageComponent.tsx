@@ -1,18 +1,18 @@
 import React, { useContext } from 'react'
 import styled from 'styled-components';
-import { AppContext } from '../context/AppContext';
+import { AppContext } from '../context/auth/AppContext';
 
 interface MessageProps {
   from: string | undefined;
-  name: string;
+  name?: string;
   message: string;
   fecha: Date;
-  img:string;
+  img?:string;
 }
 
 interface SpanStyledProps {
   from: string | undefined;
-  uid: string | null;
+  uid: string | undefined;
 
 }
 

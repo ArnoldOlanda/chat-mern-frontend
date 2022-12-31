@@ -1,10 +1,13 @@
 import React, { useContext, useEffect } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { ChatApi } from '../api/ChatApi'
-import { Chat } from '../components/Chat'
-import { AppContext } from '../context/AppContext'
+import { Chat } from '../pages/Chat'
+import { AppContext } from '../context/auth/AppContext'
 import { LoginPage } from '../pages/LoginPage'
 import { RegisterPage } from '../pages/RegisterPage'
+import { TailSpin } from 'react-loader-spinner'
+import styled from 'styled-components'
+import { MessagesProvider } from '../context/messages/MessagesContext'
 
 export const RouterApp = () => {
 
@@ -17,11 +20,11 @@ export const RouterApp = () => {
         logoutUser('')
         return;
       }
-      
+
       const { data } = await ChatApi.get('/auth/renew')
 
       localStorage.setItem('token', data.token);
-      loginUser(data.usuario.nombre, data.usuario.uid);
+      loginUser(data.usuario.nombre, data.usuario.uid, data.usuario.img);
 
     } catch (error) {
       //@ts-ignore
@@ -33,12 +36,23 @@ export const RouterApp = () => {
   }
 
   useEffect(() => {
-      checkAuth()
+    checkAuth()
   }, [])
 
-  if(state.authenticated === 'checking'){
+  if (state.authenticated === 'checking') {
     return (
-        <h3>Cargando...</h3>
+      <Container>
+        <TailSpin
+          height="80"
+          width="80"
+          color="#fcfcfc"
+          ariaLabel="tail-spin-loading"
+          radius="1"
+          wrapperStyle={{}}
+          wrapperClass=""
+          visible={true}
+        />
+      </Container>
     )
   }
 
@@ -55,7 +69,7 @@ export const RouterApp = () => {
           )
           : (
             <>
-             <Route path='/' element={<Chat />} />
+              <Route path='/' element={<Chat />} />
               <Route path='/*' element={<Navigate to={'/'} />} />
             </>
           )
@@ -63,3 +77,11 @@ export const RouterApp = () => {
     </Routes>
   )
 }
+
+const Container = styled.div`
+  width:100%;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+`

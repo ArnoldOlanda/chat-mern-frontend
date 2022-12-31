@@ -1,58 +1,61 @@
-import React,{ useContext } from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components';
 import { IoCloseOutline } from 'react-icons/io5'
-import { AppContext } from '../context/AppContext';
+import { MdLogout } from 'react-icons/md'
+
+import { AppContext } from '../context/auth/AppContext';
 import { Conversation, ConversationResponse, ConversationsResponse, Member, Message, User } from '../interfaces';
 import { ChatApi } from '../api/ChatApi';
+import { MessagesContext } from '../context/messages/MessagesContext';
+import { ConversationsContext } from '../context/conversations/ConversationsContext';
 
-interface Props{
-    onlineUsersCollapsed:boolean;
-    currentConversation:string | undefined;
+interface Props {
+    onlineUsersCollapsed: boolean;
     newMessageReceived: Message | undefined;
-    setOnlineUsersCollapsed: React.Dispatch<React.SetStateAction<boolean> >;
-    setCurrentConversation: React.Dispatch<React.SetStateAction<string | undefined> >;
-    setCurrentReceiver: React.Dispatch<React.SetStateAction<string | undefined> >;
-    setMessageToNewConversation: React.Dispatch<React.SetStateAction<boolean> >
+    setOnlineUsersCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
+    setMessageToNewConversation: React.Dispatch<React.SetStateAction<boolean>>
+    onLogout: () => void;
 }
 
-export const ConversationsAndOnlineUsers = ({ 
-    onlineUsersCollapsed, 
-    currentConversation,
-    newMessageReceived, 
-    setOnlineUsersCollapsed, 
-    setCurrentConversation, 
-    setCurrentReceiver,
-    setMessageToNewConversation
-}:Props) => {
+export const ConversationsAndOnlineUsers = ({
+    onlineUsersCollapsed,
+    newMessageReceived,
+    setOnlineUsersCollapsed,
+    setMessageToNewConversation,
+    onLogout
+}: Props) => {
 
-    const { state, setChatTitle,loadConversations } = useContext(AppContext);
+    const { state, loadConversations } = useContext(AppContext);
+    const { setChatTitle } = useContext(MessagesContext);
+    const { state: conversationsState, setCurrentConversation, setCurrentReceiver } = useContext(ConversationsContext)
 
-    const { uid, activeUsers, conversations } = state;
+    const { uid, activeUsers } = state;
+    const { currentConversation, conversations } = conversationsState
 
-    const onClickActiveUserItem = async (user:User) => {
+    const onClickActiveUserItem = async (user: User) => {
         try {
             const userUid = user.uid;
-            let conversation: Member|undefined;
+            let conversation: Member | undefined;
 
-            for(let i = 0; i<= conversations.length-1; i++ ){
-                conversation = conversations[i].members.find((member:Member)=>  member._id === userUid)
-                if(conversation){
+            for (let i = 0; i <= conversations.length - 1; i++) {
+                conversation = conversations[i].members.find((member: Member) => member._id === userUid)
+                if (conversation) {
                     setCurrentConversation(conversations[i].uid)
                     setCurrentReceiver(conversation._id)
                     setChatTitle(conversation.nombre)
                     break;
-                }    
+                }
             }
-        
-            if(!conversation){
-                const { data } = await ChatApi.post<ConversationResponse>('/conversation',{
+
+            if (!conversation) {
+                const { data } = await ChatApi.post<ConversationResponse>('/conversation', {
                     senderId: uid,
                     receiverId: user.uid
                 })
-                const {conversation} = data
+                const { conversation } = data
                 const friendName = conversation.members.filter((member: Member) => member._id !== uid);
 
-                loadConversations([...conversations,conversation])
+                loadConversations([...conversations, conversation])
                 setCurrentConversation(conversation.uid)
                 setCurrentReceiver(friendName[0]._id)
                 setChatTitle(friendName[0].nombre)
@@ -67,13 +70,13 @@ export const ConversationsAndOnlineUsers = ({
         }
     }
 
-    const onClickConversation = async (e:Conversation, friendName: Member[]) => {
+    const onClickConversation = async (e: Conversation, friendName: Member[]) => {
         setCurrentConversation(e.uid);
         setChatTitle(friendName[0].nombre);
         setCurrentReceiver(friendName[0]._id);
         setOnlineUsersCollapsed(true);
 
-        const {data} = await ChatApi.put<ConversationsResponse>(`/conversation/${e.uid}`,{senderId: uid});
+        const { data } = await ChatApi.put<ConversationsResponse>(`/conversation/${e.uid}`, { senderId: uid });
         loadConversations(data.conversations);
     }
 
@@ -97,15 +100,15 @@ export const ConversationsAndOnlineUsers = ({
                         return (
                             <ListItem
                                 key={e.uid}
-                                onClick={()=> onClickConversation( e, friendName ) }
+                                onClick={() => onClickConversation(e, friendName)}
                                 active={e.uid === currentConversation}
                             >
                                 <Avatar src={friendName[0].img} />
                                 <UsernameSpan>
                                     {
                                         (e.new_messages && e.uid === newMessageReceived?.conversation_id && e.uid !== currentConversation)
-                                        ?(<b>{friendName[0].nombre}</b>)
-                                        : friendName[0].nombre
+                                            ? (<b>{friendName[0].nombre}</b>)
+                                            : friendName[0].nombre
                                     }
                                 </UsernameSpan>
                             </ListItem>
@@ -118,9 +121,9 @@ export const ConversationsAndOnlineUsers = ({
             <ListContainer>
                 {
                     activeUsers.map((e: User) => (
-                        <ListItem 
+                        <ListItem
                             key={e.uid}
-                            onClick={() => onClickActiveUserItem(e) } 
+                            onClick={() => onClickActiveUserItem(e)}
                         >
                             <Avatar src={e.img} />
                             <Indicador />
@@ -129,6 +132,11 @@ export const ConversationsAndOnlineUsers = ({
                     ))
                 }
             </ListContainer>
+
+            <Button onClick={onLogout} >
+                Logout
+                <MdLogout size={20} />
+            </Button>
         </OnlineUserContainerDiv>
     )
 };
@@ -137,8 +145,8 @@ interface OnlineUsersDivProps {
     collapsed: boolean;
 }
 
-interface StyledListItemProps{
-    active?:boolean
+interface StyledListItemProps {
+    active?: boolean
 }
 
 const OnlineUserContainerDiv = styled.div<OnlineUsersDivProps>`
@@ -149,6 +157,8 @@ const OnlineUserContainerDiv = styled.div<OnlineUsersDivProps>`
     border-top-left-radius: 20px;
     border-bottom-left-radius: 20px ;
     transition: transform .3s ease;
+    display: flex;
+    flex-direction: column;
     div{
         display: flex;
         align-items: center;
@@ -189,7 +199,7 @@ const ListItem = styled.li<StyledListItemProps>`
     position: relative;
     align-items: center;
     padding-left: 20px;
-    background-color: ${({active})=> active ? '#c0c0c0':'transparent' };
+    background-color: ${({ active }) => active ? '#c0c0c0' : 'transparent'};
     text-decoration: none;
     gap: 5px;
     width: 100%;
@@ -229,4 +239,22 @@ const UsernameSpan = styled.span`
     /* @media screen and (max-width: 600px) {
         display: none;
     } */
+`
+const Button = styled.button`
+    background-color: #1798ee;
+    align-self: flex-end;
+    border: none;
+    width: 70%;
+    height: 5%;
+    position: absolute;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    bottom: 20px;
+    left: 10%;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
 `

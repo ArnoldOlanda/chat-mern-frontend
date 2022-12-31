@@ -1,5 +1,5 @@
 import { createContext, FC, useEffect, useReducer } from "react";
-import { AuthState, Conversation, Message, User } from "../interfaces";
+import { AuthState, Conversation, Message, User } from "../../interfaces";
 import { authReducer } from "./authReducer";
 
 interface Props {
@@ -8,24 +8,21 @@ interface Props {
 
 const initialState:AuthState = {
     authenticated: 'checking',
-    username: null,
-    uid: null,
+    username: undefined,
+    uid: undefined,
+    img: undefined,
     activeUsers: [],
-    chatMessages: [],
     conversations: [],
     uidActiveUserChat: null,
-    chatTitle: '',
-    errorMessage: undefined
+    errorMessage: undefined,
 }
 
 interface ContextProps {
     state: AuthState;
-    loginUser: (user: string, uid: string) => void;
+    loginUser: (user: string, uid: string, img: string) => void;
     logoutUser: (message: string) => void;
-    loadMessages: (data: Message[]) => void;
     loadUsers: (data: User[]) => void;
     loadConversations: (data: Conversation[]) => void
-    setChatTitle: (title:string) => void
     setActiveChat: (uid: string | null) => void;
     clearErrorMessage: () => void;
 }
@@ -36,10 +33,10 @@ export const AppProvider: FC<Props> = ({ children }) => {
 
     const [state, dispatch] = useReducer(authReducer, initialState);
 
-    const loginUser = (user: string, uid: string) => {
+    const loginUser = (user: string, uid: string, img: string) => {
         dispatch({
             type: 'login',
-            payload: { user, uid }
+            payload: { user, uid, img }
         })
 
     }
@@ -51,16 +48,7 @@ export const AppProvider: FC<Props> = ({ children }) => {
             }
         })
     }
-
-    const loadMessages = (data: Message[]) => {
-        dispatch({
-            type: 'load-messages',
-            payload: {
-                messages: data
-            }
-        })
-    }
-
+    
     const loadConversations = (data:Conversation[]) => {
         dispatch({
             type:'load-conversations',
@@ -80,14 +68,6 @@ export const AppProvider: FC<Props> = ({ children }) => {
         })
     }
 
-    const setChatTitle = (title:string) => {
-        dispatch({
-            type:'set-chat-title',
-            payload:{
-                title
-            }
-        })
-    }
 
     const setActiveChat = (uid: string | null) => {
         dispatch({
@@ -110,12 +90,10 @@ export const AppProvider: FC<Props> = ({ children }) => {
                 state,
                 loginUser,
                 logoutUser,
-                loadMessages,
                 loadUsers,
                 loadConversations,
-                setChatTitle,
                 setActiveChat,
-                clearErrorMessage
+                clearErrorMessage,
             }}
         >
             {children}

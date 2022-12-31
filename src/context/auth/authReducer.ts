@@ -1,12 +1,10 @@
-import { AuthState, Conversation, Message, User } from "../interfaces";
+import { AuthState, Conversation, Message, User } from "../../interfaces";
 
 type AuthAction =
-    | { type: 'login', payload: { user: string, uid: string } }
+    | { type: 'login', payload: { user: string, uid: string, img: string } }
     | { type: 'logout', payload: { errorMessage?: string } }
-    | { type: 'load-messages', payload: { messages: Message[] } }
     | { type: 'load-users', payload: { users: User[] } }
     | { type: 'load-conversations', payload: { conversations: Conversation[] } }
-    | { type: 'set-chat-title', payload:{ title:string }}
     | { type: 'set-uid-user-active-chat', payload: { uid: string | null } }
     | { type: 'clear-error-message' }
 
@@ -18,7 +16,8 @@ export const authReducer = (state: AuthState, action: AuthAction) => {
                 ...state,
                 authenticated: 'authenticated',
                 username: action.payload.user,
-                uid: action.payload.uid
+                uid: action.payload.uid,
+                img: action.payload.img
             }
         case 'logout':
             return {
@@ -27,11 +26,6 @@ export const authReducer = (state: AuthState, action: AuthAction) => {
                 username: '',
                 uid: '',
                 errorMessage: action.payload.errorMessage
-            }
-        case 'load-messages':
-            return {
-                ...state,
-                chatMessages: action.payload.messages
             }
         case 'load-users':
             return {
@@ -42,11 +36,6 @@ export const authReducer = (state: AuthState, action: AuthAction) => {
             return {
                 ...state,
                 conversations: action.payload.conversations
-            }
-        case 'set-chat-title':
-            return {
-                ...state,
-                chatTitle: action.payload.title
             }
         case 'set-uid-user-active-chat':
             return {
