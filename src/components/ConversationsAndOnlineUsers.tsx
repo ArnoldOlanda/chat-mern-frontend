@@ -29,8 +29,8 @@ export const ConversationsAndOnlineUsers = ({
     const { setChatTitle } = useContext(MessagesContext);
     const { state: conversationsState, setCurrentConversation, setCurrentReceiver } = useContext(ConversationsContext)
 
-    const { uid, activeUsers } = state;
-    const { currentConversation, conversations } = conversationsState
+    const { uid } = state;
+    const { currentConversation, conversations, activeUsers } = conversationsState
 
     const onClickActiveUserItem = async (user: User) => {
         try {
