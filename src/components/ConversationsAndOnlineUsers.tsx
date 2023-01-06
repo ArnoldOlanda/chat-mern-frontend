@@ -29,7 +29,7 @@ export const ConversationsAndOnlineUsers = ({
     const { setChatTitle } = useContext(MessagesContext);
     const { state: conversationsState, setCurrentConversation, setCurrentReceiver } = useContext(ConversationsContext)
 
-    const { uid } = state;
+    const { uid, username, img } = state;
     const { currentConversation, conversations, activeUsers } = conversationsState
 
     const onClickActiveUserItem = async (user: User) => {
@@ -83,7 +83,10 @@ export const ConversationsAndOnlineUsers = ({
     return (
         <OnlineUserContainerDiv collapsed={onlineUsersCollapsed}>
             <div>
-                <h4 style={{ paddingLeft: '10px' }}>Usuarios conectados</h4>
+                <div>
+                    <img src={ img } alt="user avatar" style={{ width:'60%', clipPath:'circle()' }} />
+                    <h3>{ username }</h3>
+                </div>
                 {
                     !onlineUsersCollapsed
                     && <span onClick={() => setOnlineUsersCollapsed(true)}>
@@ -91,7 +94,9 @@ export const ConversationsAndOnlineUsers = ({
                     </span>
                 }
             </div>
-            <span style={{ marginLeft: '10px', marginTop: '10px' }}><b>Chats</b></span>
+            <span style={{ marginLeft: '10px', marginTop: '10px' }}>
+                <b>Chats ({conversations.length})</b>
+            </span>
             <ListContainer>
                 {
                     conversations.map((e: Conversation) => {
@@ -117,7 +122,9 @@ export const ConversationsAndOnlineUsers = ({
                 }
             </ListContainer>
 
-            <span style={{ marginLeft: '10px' }}><b>Usuarios activos</b></span>
+            <span style={{ marginLeft: '10px' }}>
+                <b>Usuarios activos ({activeUsers.length})</b>
+            </span>
             <ListContainer>
                 {
                     activeUsers.map((e: User) => (
@@ -150,7 +157,7 @@ interface StyledListItemProps {
 }
 
 const OnlineUserContainerDiv = styled.div<OnlineUsersDivProps>`
-    background-color: rgb(238, 238, 238);
+    background: ${ props => props.theme.background };
     width: 30%;
     height: 100%;
     position: relative;
@@ -159,10 +166,17 @@ const OnlineUserContainerDiv = styled.div<OnlineUsersDivProps>`
     transition: transform .3s ease;
     display: flex;
     flex-direction: column;
+    
     div{
         display: flex;
         align-items: center;
         justify-content: space-around;
+        div{
+            display:flex;
+            flex-direction:column;
+            margin-top:20px;
+            color: ${ props => props.theme.title };
+        }
         span{
             width: 25px;
             height: 25px;
@@ -177,6 +191,10 @@ const OnlineUserContainerDiv = styled.div<OnlineUsersDivProps>`
         }
     }
     
+    span{
+        color: ${ props => props.theme.title };
+    }
+
     @media screen and (max-width: 600px) {
         position: absolute;
         z-index: 10000;
@@ -199,17 +217,14 @@ const ListItem = styled.li<StyledListItemProps>`
     position: relative;
     align-items: center;
     padding-left: 20px;
-    background-color: ${({ active }) => active ? '#c0c0c0' : 'transparent'};
+    background-color: ${({ active, theme }) => active ? theme.active_item : 'transparent'};
     text-decoration: none;
     gap: 5px;
     width: 100%;
     height: 50px;
-    /* margin-bottom: 10px; */
-    transition: all .1s ease-in-out;
+    color:${ props => props.theme.text };
+    transition: transform .1s ease-in-out;
     cursor: pointer;
-    /* &:hover{
-        background-color: #c0c0c0;
-    } */
     @media screen and (max-width: 1024px) {
         width: 80%;
         max-width: 80%;

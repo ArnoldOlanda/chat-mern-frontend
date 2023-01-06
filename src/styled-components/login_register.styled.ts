@@ -16,11 +16,12 @@ export const InputContainer = styled.div`
         padding-right: 20px;
         border-radius: 40px;
         font-size: 16px;
-        color:#292929;
+        background-color:${ ({theme})=> theme.input_bg };
+        color:${ ({theme})=> theme.text };
     }
 `
 export const StyledButton = styled.button`
-    background-color: #3448f1;
+    background-color: ${ props => props.theme.button_bg };
     color:#fff;
     width: 100%;
     height: 45px;
@@ -44,6 +45,7 @@ export const RegisterSection = styled.div`
     justify-content: flex-end;
     gap: 10px;
     user-select: none;
+    color: ${ ({theme})=> theme.text };
 `
 export const RegisterLink = styled(Link)`
     text-decoration: none;

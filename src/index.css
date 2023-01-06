@@ -10,8 +10,8 @@ body {
   display: flex;
   width: 100%;
   min-height: 100vh;
-  background: rgb(61,196,231);
-  background: linear-gradient(137deg, rgba(61,196,231,1) 0%, rgba(52,157,241,1) 44%, rgba(31,43,222,1) 100%);
+  background: rgb(2,0,36);
+  background: linear-gradient(345deg, rgba(2,0,36,1) 0%, rgb(9, 55, 155) 35%, rgba(36,95,203,1) 100%);
 }
 
 #root{

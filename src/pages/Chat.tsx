@@ -1,16 +1,12 @@
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 
 import { useChat } from '../hooks/useChat';
-import { AppContext } from '../context/auth/AppContext';
 import { WriteMessage, Messages, TitleChat, ConversationsAndOnlineUsers } from '../components'
-import { ChatContainerDiv, Container, MainContentDiv, TopContent } from '../styled-components';
+import { ChatContainerDiv, Container, MainContentDiv } from '../styled-components';
 
 export const Chat = () => {
 
-    const { state } = useContext(AppContext);
     const [onlineUsersCollapsed, setOnlineUsersCollapsed] = useState<boolean>(true);
-
-    const { username } = state;
 
     const {
         newMessage,
@@ -28,9 +24,6 @@ export const Chat = () => {
 
     return (
             <Container>
-                <TopContent>
-                    <h3>Hola {username}</h3>
-                </TopContent>
                 <MainContentDiv>
 
                     <ConversationsAndOnlineUsers

@@ -48,19 +48,13 @@ const StyledInput = styled.input`
     flex:1;
     border-radius: 50px;
     border: none;
-    /* background-color: #585858; */
+    background-color: ${ ({ theme }) => theme.input_bg };
     outline: none;
     padding-left: 25px;
     font-size: 15px;
-    box-shadow: -1px 14px 13px -7px rgba(94,94,94,0.66);
-    -webkit-box-shadow: -1px 14px 13px -7px rgba(94,94,94,0.66);
-    -moz-box-shadow: -1px 14px 13px -7px rgba(94,94,94,0.66);
 `
 const StyledButton = styled.button`
     background-color: #038cfc;
-    box-shadow: -1px 14px 13px -7px rgba(94,94,94,0.66);
-    -webkit-box-shadow: -1px 14px 13px -7px rgba(94,94,94,0.66);
-    -moz-box-shadow: -1px 14px 13px -7px rgba(94,94,94,0.66);
     border:none;
     width: 50px;
     height: 50px;

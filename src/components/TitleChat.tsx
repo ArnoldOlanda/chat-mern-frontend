@@ -28,6 +28,7 @@ const TitleChatContainer = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    color:${ ({ theme })=> theme.title }
 `
 
 const ButtonCollapse = styled.button`

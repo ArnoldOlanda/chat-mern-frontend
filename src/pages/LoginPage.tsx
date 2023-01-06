@@ -1,7 +1,6 @@
 
 import React, { useContext, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { ChatApi } from '../api/ChatApi';
 import { AppContext } from '../context/auth/AppContext';
@@ -16,6 +15,9 @@ interface initialState {
 
 
 export const LoginPage = () => {
+
+    
+    
 
     const { state, loginUser, logoutUser,clearErrorMessage } = useContext(AppContext);
     const navigate = useNavigate();
@@ -54,6 +56,7 @@ export const LoginPage = () => {
     useEffect(() => {
         if (state.errorMessage) Swal.fire('Error de logueo', state.errorMessage, 'error')
     }, [state.errorMessage])
+    
 
     return (
             <AuthLayout onSubmit={onClickLogin} title={'MERN Chat'}>

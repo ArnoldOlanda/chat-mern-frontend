@@ -7,7 +7,7 @@ import { LoginPage } from '../pages/LoginPage'
 import { RegisterPage } from '../pages/RegisterPage'
 import { TailSpin } from 'react-loader-spinner'
 import styled from 'styled-components'
-import { MessagesProvider } from '../context/messages/MessagesContext'
+
 
 export const RouterApp = () => {
 
@@ -57,24 +57,24 @@ export const RouterApp = () => {
   }
 
   return (
-    <Routes>
-      {
-        state.authenticated === 'not-authenticated'
-          ? (
-            <>
-              <Route path='/auth/login' element={<LoginPage />} />
-              <Route path='/auth/register' element={<RegisterPage />} />
-              <Route path='/*' element={<Navigate to={'/auth/login'} />} />
-            </>
-          )
-          : (
-            <>
-              <Route path='/' element={<Chat />} />
-              <Route path='/*' element={<Navigate to={'/'} />} />
-            </>
-          )
-      }
-    </Routes>
+      <Routes>
+        {
+          state.authenticated === 'not-authenticated'
+            ? (
+              <>
+                <Route path='/auth/login' element={<LoginPage />} />
+                <Route path='/auth/register' element={<RegisterPage />} />
+                <Route path='/*' element={<Navigate to={'/auth/login'} />} />
+              </>
+            )
+            : (
+              <>
+                <Route path='/' element={<Chat />} />
+                <Route path='/*' element={<Navigate to={'/'} />} />
+              </>
+            )
+        }
+      </Routes>
   )
 }
 

@@ -56,8 +56,8 @@ const SpanStyled = styled.span<SpanStyledProps>`
   min-width: 50px;
   max-width: 60%;
   border-radius: 12px;
-  background-color:${({ uid, from }) => uid === from ? '#038cfc' : '#d8d8d8'};
-  color:${({ uid, from }) => uid === from ? '#f0f0f0' : '#444444'};
+  background-color:${({ uid, from, theme }) => uid === from ? '#038cfc' : theme.gray};
+  color:${({ uid, from, theme }) => uid === from ? '#f0f0f0' : theme.text };
   padding: 5px 10px;
   padding-top: 8px;
   display: flex;

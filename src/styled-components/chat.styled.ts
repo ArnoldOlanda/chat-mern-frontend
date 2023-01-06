@@ -48,7 +48,8 @@ export const MainContentDiv = styled.div`
     max-height: 80vh;
     border-radius: 20px;
     overflow: hidden;
-    background: rgba( 255, 255, 255, 0.45 );
+    /* background: rgba( 255, 255, 255, 0.45 ); */
+    background: ${ props => props.theme.background };
     box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
     backdrop-filter: blur( 11px );
     -webkit-backdrop-filter: blur( 11px );
@@ -63,13 +64,14 @@ export const MainContentDiv = styled.div`
 `
 export const ChatContainerDiv = styled.div<ChatContentDivProps>`
     position: relative;
-    background-color: rgb(241, 241, 241);
+    /* background-color: rgb(241, 241, 241); */
+    background: ${ props => props.theme.background };
     width: 70%;
     padding:0 10px;
     height: 100%;
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px ;
-    transition: background-color .3s ease-in-out;
+    /* transition: background-color .3s ease-in-out; */
     @media screen and (max-width: 600px) {
         width: 100%;
         &::after{

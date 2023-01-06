@@ -25,6 +25,11 @@ export interface ConversationsState{
     currentReceiver: string | null;
 }
 
+export interface ThemeState{
+    currentTheme: string;
+    theme:object;
+}
+
 export interface User {
     nombre: string;
     correo: string;
