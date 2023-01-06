@@ -31,6 +31,9 @@ export const StyledButton = styled.button`
     font-size: 18px;
     margin-top: 10px;
     margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     &:hover{
         background-color: #1d2ec7;
     }

@@ -1,5 +1,6 @@
 
 import React, { useContext, useEffect } from 'react'
+import { TailSpin } from 'react-loader-spinner';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { ChatApi } from '../api/ChatApi';
@@ -16,12 +17,10 @@ interface initialState {
 
 export const LoginPage = () => {
 
-    
-    
-
-    const { state, loginUser, logoutUser,clearErrorMessage } = useContext(AppContext);
+    const { state, startLoading, loginUser, logoutUser, clearErrorMessage } = useContext(AppContext);
     const navigate = useNavigate();
 
+    const {errorMessage, isLoading} = state
     const { onInputChange, formState } = useForm({ correo: '', password: '' });
     const { correo, password } = formState as initialState;
 
@@ -35,11 +34,32 @@ export const LoginPage = () => {
         }
 
         try {
+            startLoading();
+
             const resp = await ChatApi.post('/auth/login', { correo, password })
             const { data } = resp;
 
             localStorage.setItem('token', data.token);
+
             loginUser(data.usuario.nombre, data.usuario.uid, data.usuario.img);
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                  toast.addEventListener('mouseenter', Swal.stopTimer)
+                  toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+              })
+              
+            Toast.fire({
+            icon: 'success',
+            title: 'Signed in successfully'
+            })
+
             navigate('/chat');
 
         } catch (error) {
@@ -54,8 +74,8 @@ export const LoginPage = () => {
     }
 
     useEffect(() => {
-        if (state.errorMessage) Swal.fire('Error de logueo', state.errorMessage, 'error')
-    }, [state.errorMessage])
+        if (errorMessage) Swal.fire('Error de logueo', errorMessage, 'error')
+    }, [errorMessage])
     
 
     return (
@@ -81,7 +101,21 @@ export const LoginPage = () => {
                     />
                 </InputContainer>
 
-                <StyledButton>Login</StyledButton>
+                <StyledButton>
+                    {
+                        isLoading 
+                        ?   (<TailSpin
+                                height="25"
+                                width="25"
+                                color="#fcfcfc"
+                                ariaLabel="tail-spin-loading"
+                                radius="1"
+                                visible={true}
+                            />)
+                        : 'Login'
+                    }
+                    
+                </StyledButton>
                 <RegisterSection>
                     ¿Eres nuevo por aqui? 
                     <RegisterLink to="/auth/register">Registrate</RegisterLink> 

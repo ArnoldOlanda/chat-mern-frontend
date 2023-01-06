@@ -15,6 +15,7 @@ const initialState:AuthState = {
     conversations: [],
     uidActiveUserChat: null,
     errorMessage: undefined,
+    isLoading:false
 }
 
 interface ContextProps {
@@ -25,6 +26,7 @@ interface ContextProps {
     loadConversations: (data: Conversation[]) => void
     setActiveChat: (uid: string | null) => void;
     clearErrorMessage: () => void;
+    startLoading: () => void;
 }
 
 export const AppContext = createContext<ContextProps>({} as ContextProps);
@@ -68,6 +70,11 @@ export const AppProvider: FC<Props> = ({ children }) => {
         })
     }
 
+    const startLoading = () => {
+        dispatch({
+            type:'start-loading'
+        })
+    }
 
     const setActiveChat = (uid: string | null) => {
         dispatch({
@@ -94,6 +101,7 @@ export const AppProvider: FC<Props> = ({ children }) => {
                 loadConversations,
                 setActiveChat,
                 clearErrorMessage,
+                startLoading
             }}
         >
             {children}

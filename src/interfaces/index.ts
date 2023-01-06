@@ -8,6 +8,7 @@ export interface AuthState{
     conversations: Conversation[];
     activeUsers: User[];
     uidActiveUserChat: string | null;
+    isLoading:boolean;
 }
 
 export interface MessagesState{

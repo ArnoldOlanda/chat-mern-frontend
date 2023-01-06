@@ -7,6 +7,7 @@ type AuthAction =
     | { type: 'load-conversations', payload: { conversations: Conversation[] } }
     | { type: 'set-uid-user-active-chat', payload: { uid: string | null } }
     | { type: 'clear-error-message' }
+    | { type: 'start-loading' }
 
 
 export const authReducer = (state: AuthState, action: AuthAction) => {
@@ -14,6 +15,7 @@ export const authReducer = (state: AuthState, action: AuthAction) => {
         case 'login':
             return {
                 ...state,
+                isLoading:false,
                 authenticated: 'authenticated',
                 username: action.payload.user,
                 uid: action.payload.uid,
@@ -22,6 +24,7 @@ export const authReducer = (state: AuthState, action: AuthAction) => {
         case 'logout':
             return {
                 ...state,
+                isLoading:false,
                 authenticated: 'not-authenticated',
                 username: '',
                 uid: '',
@@ -46,6 +49,11 @@ export const authReducer = (state: AuthState, action: AuthAction) => {
             return {
                 ...state,
                 errorMessage: ''
+            }
+        case 'start-loading':
+            return {
+                ...state,
+                isLoading: true
             }
         default:
             return state;

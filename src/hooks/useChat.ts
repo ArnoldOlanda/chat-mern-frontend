@@ -27,10 +27,24 @@ export const useChat = () => {
     const [messageToNewConversation, setMessageToNewConversation] = useState(false);
 
     const onLogout = () => {
-        logoutUser('');
-        socket.disconnect();
-        localStorage.removeItem('token');
-        navigate('/auth/login');
+        
+        Swal.fire({
+            title: '¿Realmente desea cerrar la sesion?',
+            showCancelButton: true,
+            confirmButtonText: 'Salir',
+          }).then((result) => {
+                if (result.isConfirmed) {
+                    logoutUser('');
+                    socket.disconnect();
+                    localStorage.removeItem('token');
+                    navigate('/auth/login');
+                }
+            })
+
+        // logoutUser('');
+        // socket.disconnect();
+        // localStorage.removeItem('token');
+        // navigate('/auth/login');
     }
 
     const onClickSend = async () => {
