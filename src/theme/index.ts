@@ -6,7 +6,7 @@ export const mainTheme = {
     title:'#000',
     text:'#111',
     // color:'#222',
-    input_bg:'#fff',
+    input_bg:'#eee',
     button_bg:'#3448f1',
     gray: '#d8d8d8',
     active_item:'#c0c0c0'

@@ -18,7 +18,7 @@ export const TitleContainer = styled.div`
     a{
         position:absolute;
         left: 10px;
-        color:#000;
+        color:${({theme})=> theme.title }
     }
 `
 

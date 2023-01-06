@@ -27,7 +27,11 @@ export const ConversationsAndOnlineUsers = ({
 
     const { state, loadConversations } = useContext(AppContext);
     const { setChatTitle } = useContext(MessagesContext);
-    const { state: conversationsState, setCurrentConversation, setCurrentReceiver } = useContext(ConversationsContext)
+    const { 
+        state: conversationsState,
+        setCurrentConversation,
+        setCurrentReceiver 
+    } = useContext(ConversationsContext)
 
     const { uid, username, img } = state;
     const { currentConversation, conversations, activeUsers } = conversationsState
@@ -94,7 +98,7 @@ export const ConversationsAndOnlineUsers = ({
                     </span>
                 }
             </div>
-            <span style={{ marginLeft: '10px', marginTop: '10px' }}>
+            <span style={{ marginLeft: '10px', marginTop: '10px', marginBottom:'10px' }}>
                 <b>Chats ({conversations.length})</b>
             </span>
             <ListContainer>

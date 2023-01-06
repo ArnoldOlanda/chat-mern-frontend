@@ -42,10 +42,12 @@ export default App
 const Button = styled.button`
   background-color: transparent;
   border: none;
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   position: absolute;
+  border-radius: 50%;
+  background-color: rgba(255,255,255,0.25);
   top: 5px;
-  left: 5px;
+  right: 5px;
   z-index: 200;
 `

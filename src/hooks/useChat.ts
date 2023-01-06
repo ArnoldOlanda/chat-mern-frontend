@@ -88,7 +88,7 @@ export const useChat = () => {
     useEffect(() => {
         fetchConversations();
         // socket = io('http://192.168.1.34:8000', {
-        socket = io('https://chat-mern.onrender.com', {
+        socket = io('https://chat-mern-backend-production.up.railway.app', {
             extraHeaders: { "x_token": localStorage.getItem('token') || "" }
         });
 
@@ -129,7 +129,7 @@ export const useChat = () => {
     }, []);
 
     useEffect(() => {
-        const notificationAudio = new Audio('https://chat-mern.onrender.com/new_message.mp3')
+        const notificationAudio = new Audio('https://chat-mern-backend-production.up.railway.app/new_message.mp3')
         if (newMessageReceived) {
             if (currentConversation) {
                 if (newMessageReceived.conversation_id === currentConversation) {
